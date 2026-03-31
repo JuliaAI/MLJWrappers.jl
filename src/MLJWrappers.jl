@@ -2,8 +2,7 @@
     MLJWrappers
 
 Module providing various light-weight model wrappers for
-[MLJ](https://juliaai.github.io/MLJ.jl/stable/) models, so that they are treated as
-transformers in model pipelines:
+[MLJ](https://juliaai.github.io/MLJ.jl/stable/) models.
 
 - [`Transformer`](@ref): For wrapping supervised models that implement transform to have
   them behave as transformers in pipelines
