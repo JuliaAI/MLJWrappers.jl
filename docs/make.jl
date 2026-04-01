@@ -24,5 +24,7 @@ makedocs(
 deploydocs(
     ; repo=REPO,
     devbranch="dev",
+    devurl = "dev",
+    versions = ["stable" => "v^", "dev" => "dev"],
     push_preview=true,
 )
