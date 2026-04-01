@@ -10,6 +10,7 @@ jobs:
     permissions:
       contents: write
       statuses: write
+      actions: write
     name: Documentation
     runs-on: ubuntu-latest
     steps:
