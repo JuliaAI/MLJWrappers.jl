@@ -1,10 +1,12 @@
 using Documenter
 using MLJWrappers
 
-repo = Remotes.GitHub("JuliaAI", "MLJWrappers.jl"),
+const REPO="github.com/JuliaAI/MLJWrappers.jl"
 
 makedocs(
-    ; modules=[MLJWrappers,],
+    modules=[
+        MLJWrappers,
+    ],
     format=Documenter.HTML(
         prettyurls = true,
         collapselevel = 1,
@@ -13,13 +15,13 @@ makedocs(
     pages=[
         "Home" => "index.md",
     ],
+    repo=Remotes.GitHub("JuliaAI", "MLJWrappers.jl"),
     warnonly = [:cross_references, :missing_docs],
     sitename="MLJWrappers.jl",
-    repo,
 )
 
 deploydocs(
-    ; repo,
+    ; repo=REPO,
     devbranch="dev",
     push_preview=false,
 )

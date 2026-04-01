@@ -1,5 +1,6 @@
-# AsTransformer.jl
+# MLJWrappers
 
 ```@docs
-AsTransformer
+MLJWrappers
+Transformer
 ```
