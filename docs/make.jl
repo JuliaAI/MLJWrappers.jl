@@ -1,7 +1,7 @@
 using Documenter
 using MLJWrappers
 
-const REPO="github.com/JuliaAI/MLJWrappers.jl"
+const REPO="github.com/JuliaAI/MLJWrappers.jl.git"
 
 makedocs(
     modules=[
