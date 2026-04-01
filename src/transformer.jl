@@ -105,9 +105,9 @@ The original hyperparameters of `supervised_model` are nested hyperparameters in
 
 # Example
 
-Below `reducer` is a supervised model implementing `transform` which
-selects features using Recursive Feature Elimination. However, in an MLJ pipeline it is
-treated as supervised, leading to the error shown.
+Below `reducer` is a supervised model implementing `transform` which selects features
+using Recursive Feature Elimination. Because it is supervised, we obtain an error when we
+follow it with another supervised model in a pipeline:
 
 ```julia
 using MLJ

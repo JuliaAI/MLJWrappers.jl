@@ -14,6 +14,7 @@ makedocs(
     ),
     pages=[
         "Home" => "index.md",
+        "Transformer" => "transformer.md",
     ],
     repo=Remotes.GitHub("JuliaAI", "MLJWrappers.jl"),
     warnonly = [:cross_references, :missing_docs],
