@@ -93,16 +93,38 @@ end |> eval
 
 Wrap `supervised_model` so that it is treated as a transformer in MLJ pipelines. It is
 assumed that `supervised_model isa Supervised` and that `transform` is implemented for the
-model type. For `Supervised` models in an MLJ pipeline, it is the output of `predict` that
-is propagated by default to the next model in the pipeline. This wrapper allows one to
-circumvent that behaviour, as shown in the example below:
+model type.
+
+For `Supervised` models in an MLJ pipeline, it is the output of `predict` that is
+propagated by default to the next model in the pipeline. By wrapping in `Transform`, the
+output of `transform` is propagated instead.
 
 The original hyperparameters of `supervised_model` are nested hyperparameters in
 `Transformer(supervised_model)`, but in most other respects the latter behaves like
-`superivsed_model`.
+`supervised_model`.
 
 # Example
 
+Below `reducer` is a supervised model implementing `transform` which
+selects features using Recursive Feature Elimination. However, in an MLJ pipeline it is
+treated as supervised, leading to the error shown.
+
+```julia
+using MLJ
+RandomForestClassifier = @load RandomForestClassifier pkg=DecisionTree
+KNNClassifier = @load KNNClassifier pkg=NearestNeighborModels
+
+reducer = RecursiveFeatureElimination(RandomForestClassifier(), n_features=2)
+reducer |> KNNClassifier()
+# ERROR: ArgumentError: More than one supervised model in a pipeline is not permitted
+```
+
+The following, however, works as expected, passing the reduced training features to the
+K-nearest neighbor classifier, when `pipe` is trained.
+
+```
+pipe = Transformer(reducer) |> KNNClassifier()
+```
 
 """
 Transformer

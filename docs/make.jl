@@ -1,7 +1,7 @@
 using Documenter
 using MLJWrappers
 
-repo = Remotes.GitHub("JuliaAI", "MLJWrappers.jl"),
+repo = Remotes.GitHub("JuliaAI", "MLJWrappers.jl")
 
 makedocs(
     ; modules=[MLJWrappers,],
