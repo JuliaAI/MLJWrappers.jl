@@ -8,7 +8,7 @@ Module providing various light-weight model wrappers for
   them behave as transformers in pipelines
 
 """
-module MLJWrappers
+module MLJWrappers 
 
 import MLJModelInterface as MMI
 
