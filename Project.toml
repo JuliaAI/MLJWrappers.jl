@@ -13,6 +13,7 @@ MLJDecisionTreeInterface = "0.4.4"
 MLJModelInterface = "1.12.1"
 StableRNGs = "1.0.4"
 Test = "1"
+julia = "1.10"
 
 [extras]
 FeatureSelection = "33837fe5-dbff-4c9e-8c2f-c5612fe2b8b6"
