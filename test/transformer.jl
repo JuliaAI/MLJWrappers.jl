@@ -26,6 +26,8 @@ end
 @test iteration_parameter(transformer) == :(model.n_trees)
 @test is_wrapper(transformer)
 
+@test MLJBase.MLJModelInterface.constructor(transformer) == Transformer
+
 # synthesize some data for training `model` and its wrapped version:
 rng = StableRNGs.StableRNG(123)
 x1 = rand(rng, 20)
@@ -60,7 +62,7 @@ importances = feature_importances(model, fitresult, rprt)
 importances2 = feature_importances(transformer, fitresult2, rprt2)
 @test importances2 == importances
 
-# not implemented by atomic model, so returning `nothing` here:
+# not implemented by atomic model, so  `nothing` is being returned here:
 @test training_losses(transformer, rprt2) == training_losses(model, rprt)
 
 # The `reducer` below is a supervised model implementing `transform`. For the above data,

@@ -42,6 +42,9 @@ MMI.metadata_pkg(
     is_wrapper = true
 )
 
+# wrappers are required to overload this trait:
+MMI.constructor(::Type{<:Transformer}) = Transformer
+
 MMI.metadata_model(
     Transformer,
     load_path = "Transformer.Transformer",
