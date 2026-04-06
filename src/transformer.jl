@@ -35,7 +35,7 @@ MMI.transform(transformer::Transformer, fitresult, Xnew) =
 
 MMI.metadata_pkg(
     Transformer,
-    package_name = "MLJWrappers.jl",
+    package_name = "MLJWrappers",
     package_uuid = "b5d0f7f3-9870-4c70-ba08-cb780c37e63f",
     package_url = "https://github.com/JuliaAI/Transformer.jl",
     is_pure_julia = true,
