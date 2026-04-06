@@ -47,7 +47,7 @@ MMI.constructor(::Type{<:Transformer}) = Transformer
 
 MMI.metadata_model(
     Transformer,
-    load_path = "Transformer.Transformer",
+    load_path = "MLJWrappers.Transformer",
 )
 
 MMI.target_in_fit(::Type{<:Transformer}) = true
