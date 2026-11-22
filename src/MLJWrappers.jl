@@ -11,8 +11,17 @@ Module providing various light-weight model wrappers for
 module MLJWrappers
 
 import MLJModelInterface as MMI
+import MLJModelInterface: Probabilistic, Deterministic,
+    ProbabilisticUnsupervisedDetector,
+    ProbabilisticSupervisedDetector,
+    DeterministicUnsupervisedDetector,
+    DeterministicSupervisedDetector
+using ScientificTypes
+using CategoricalDistributions
+
 
 include("transformer.jl")
+include("binary_threshold_predictor.jl")
 
 export Transformer
 

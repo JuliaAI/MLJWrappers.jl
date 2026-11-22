@@ -2,6 +2,7 @@ using Test
 
 test_files = [
     "transformer.jl",
+    "binary_threshold_predictor.jl",
 ]
 
 files = isempty(ARGS) ? test_files : ARGS
