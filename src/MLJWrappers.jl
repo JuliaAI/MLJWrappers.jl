@@ -7,6 +7,10 @@ Module providing various light-weight model wrappers for
 - [`Transformer`](@ref): For wrapping supervised models that implement transform to have
   them behave as transformers in pipelines
 
+- [`BinaryThresholdPredictor`](@ref): For wrapping a model making binary, probabilistic
+  predictions, to make it predict point predictions, based on a user-specified probability
+  threshold.
+
 """
 module MLJWrappers
 
@@ -23,6 +27,6 @@ using CategoricalDistributions
 include("transformer.jl")
 include("binary_threshold_predictor.jl")
 
-export Transformer
+export Transformer, BinaryThresholdPredictor
 
 end # module
