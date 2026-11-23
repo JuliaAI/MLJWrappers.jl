@@ -9,7 +9,7 @@ MLJModelInterface = "e80e1ace-859a-464e-9ed9-23947d8ae3ea"
 [compat]
 FeatureSelection = "0.2.4"
 MLJBase = "1.12.1"
-MLJDecisionTreeInterface = "0.4.4"
+MLJDecisionTreeInterface = "0.4.4, 0.5"
 MLJModelInterface = "1.12.1"
 StableRNGs = "1.0.4"
 Test = "1"
