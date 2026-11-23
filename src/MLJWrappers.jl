@@ -26,7 +26,7 @@ using MLJModelInterface: Probabilistic, Deterministic,
 using ScientificTypes
 using CategoricalDistributions
 
-
+include("shared.jl")
 include("transformer.jl")
 include("binary_threshold_predictor.jl")
 

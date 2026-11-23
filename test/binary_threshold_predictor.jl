@@ -1,5 +1,5 @@
 using Test
-import MLJWrappers
+using MLJWrappers
 using MLJModels
 using MLJTransforms
 using CategoricalArrays
@@ -23,6 +23,7 @@ y2_ = categorical(yraw[2:end], ordered=true)
 
     @test_throws MLJWrappers.ERR_MODEL_UNSPECIFIED MLJWrappers.BinaryThresholdPredictor()
     model = MLJWrappers.BinaryThresholdPredictor(atom)
+    @test MLJWrappers.BinaryThresholdPredictor(; model=atom) == model
 
     @test_throws(
         MLJWrappers.err_unsupported_model_type(MLJBase.Unsupervised),
@@ -89,7 +90,7 @@ y2_ = categorical(yraw[2:end], ordered=true)
     @test MMI.package_uuid(model) isa String
     @test MMI.is_wrapper(model)
     @test MMI.constructor(model) == MLJWrappers.BinaryThresholdPredictor
-    @test MMI.package_url(model) == "https://github.com/JuliaAI/MLJModels.jl"
+    @test MMI.package_url(model) == "https://github.com/JuliaAI/MLJWrappers.jl"
 end
 
 @testset "_predict_threshold" begin
@@ -202,6 +203,12 @@ MMI.iteration_parameter(::Type{<:DummyIterativeClassifier}) = :n
 MMI.supports_training_losses(::Type{<:DummyIterativeClassifier}) = true
 MMI.target_scitype(::Type{<:DummyIterativeClassifier}) =
     AbstractVector{Multiclass{2}}
+
+@testset "iteration parameter" begin
+    thresholder = MLJWrappers.BinaryThresholdPredictor(DummyIterativeClassifier())
+    @test MMI.iteration_parameter(thresholder) == :(model.n)
+    @test MMI.iteration_parameter(typeof(thresholder)) == :(model.n)
+end
 
 @testset "training losses support" begin
     X = ones(3, 2)

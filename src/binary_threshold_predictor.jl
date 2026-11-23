@@ -336,7 +336,7 @@ MMI.package_name(::Type{<:ThresholdUnion}) = "MLJWrappers"
 MMI.package_uuid(::Type{<:ThresholdUnion}) = ""
 MMI.is_wrapper(::Type{<:ThresholdUnion}) = true
 MMI.package_url(::Type{<:ThresholdUnion}) =
-    "https://github.com/JuliaAI/MLJModels.jl"
+    "https://github.com/JuliaAI/MLJWrappers.jl"
 MMI.load_path(::Type{<:ThresholdUnion}) = "MLJWrappers.BinaryThresholdPredictor"
 MMI.constructor(::Type{<:ThresholdUnion}) = BinaryThresholdPredictor
 
@@ -397,13 +397,13 @@ MMI.target_scitype(model::ThresholdUnion) =
 for New in THRESHOLD_TYPE_EXS
     quote
         MMI.iteration_parameter(::Type{<:$New{M}}) where M =
-            MLJModels.prepend(:model, MMI.iteration_parameter(M))
+            MLJWrappers.prepend(:model, MMI.iteration_parameter(M))
     end |> eval
 end
 
 # at level of instances:
 MMI.iteration_parameter(model::ThresholdUnion) =
-    MLJModels.prepend(:model, MMI.iteration_parameter(model.model))
+    MLJWrappers.prepend(:model, MMI.iteration_parameter(model.model))
 
 
 # ## TRAINING LOSSES SUPPORT

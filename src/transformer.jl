@@ -80,12 +80,9 @@ MMI.feature_importances(transformer::Transformer, args...) =
     MMI.feature_importances(transformer.model, args...)
 
 # Iteration parameter:
-prepend(s::Symbol, ::Nothing) = nothing
-prepend(s::Symbol, t::Symbol) = Expr(:(.), s, QuoteNode(t))
-prepend(s::Symbol, ex::Expr) = Expr(:(.), prepend(s, ex.args[1]), ex.args[2])
 quote
     MMI.iteration_parameter(::Type{<:Transformer{M}}) where M =
-        prepend(:model, MMI.iteration_parameter(M))
+        MLJWrappers.prepend(:model, MMI.iteration_parameter(M))
 end |> eval
 
 
