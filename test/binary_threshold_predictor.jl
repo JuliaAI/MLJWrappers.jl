@@ -85,6 +85,11 @@ y2_ = categorical(yraw[2:end], ordered=true)
     @test MMI.is_pure_julia(model) == MMI.is_pure_julia(model.model)
     @test MMI.name(model) == "BinaryThresholdPredictor"
     @test MMI.load_path(model) == "MLJWrappers.BinaryThresholdPredictor"
+    @test MMI.package_name(model) == "MLJWrappers"
+    @test MMI.package_uuid(model) isa String
+    @test MMI.is_wrapper(model)
+    @test MMI.constructor(model) == MLJWrappers.BinaryThresholdPredictor
+    @test MMI.package_url(model) == "https://github.com/JuliaAI/MLJModels.jl"
 end
 
 @testset "_predict_threshold" begin

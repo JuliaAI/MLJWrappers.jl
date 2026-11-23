@@ -332,7 +332,7 @@ end
 
 # Note: input traits are inherited from the wrapped model
 
-MMI.package_name(::Type{<:ThresholdUnion}) = "MLJModels"
+MMI.package_name(::Type{<:ThresholdUnion}) = "MLJWrappers"
 MMI.package_uuid(::Type{<:ThresholdUnion}) = ""
 MMI.is_wrapper(::Type{<:ThresholdUnion}) = true
 MMI.package_url(::Type{<:ThresholdUnion}) =
