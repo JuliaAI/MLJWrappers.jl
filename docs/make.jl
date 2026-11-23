@@ -15,6 +15,7 @@ makedocs(
     pages=[
         "Home" => "index.md",
         "Transformer" => "transformer.md",
+        "Binary Threshold Predictor" => "binary_threshold_predictor.md",
     ],
     repo=Remotes.GitHub("JuliaAI", "MLJWrappers.jl"),
     warnonly = [:cross_references, :missing_docs],
