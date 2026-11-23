@@ -7,7 +7,7 @@ end;
 
 # # LOGGING
 
-const ERR_MODEL_UNSPECIFIED = ErrorException(
+const ERR_TRANSFORMER_MODEL_UNSPECIFIED = ErrorException(
 "You must specify a suitable supervised model to wrap, as in "*
     "`Transformer(model=...)`. "
 )
@@ -17,7 +17,7 @@ const ERR_MODEL_UNSPECIFIED = ErrorException(
 
 # keyword constructor:
 function Transformer(; model=nothing)
-    isnothing(model) && throw(ERR_MODEL_UNSPECIFIED)
+    isnothing(model) && throw(ERR_TRANSFORMER_MODEL_UNSPECIFIED)
     return Transformer(model)
 end
 
@@ -80,12 +80,9 @@ MMI.feature_importances(transformer::Transformer, args...) =
     MMI.feature_importances(transformer.model, args...)
 
 # Iteration parameter:
-prepend(s::Symbol, ::Nothing) = nothing
-prepend(s::Symbol, t::Symbol) = Expr(:(.), s, QuoteNode(t))
-prepend(s::Symbol, ex::Expr) = Expr(:(.), prepend(s, ex.args[1]), ex.args[2])
 quote
     MMI.iteration_parameter(::Type{<:Transformer{M}}) where M =
-        prepend(:model, MMI.iteration_parameter(M))
+        MLJWrappers.prepend(:model, MMI.iteration_parameter(M))
 end |> eval
 
 

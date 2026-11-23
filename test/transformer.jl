@@ -7,6 +7,8 @@ using StableRNGs
 
 model = RandomForestClassifier(rng=123)
 transformer = Transformer(deepcopy(model))
+@test Transformer(; model) == transformer
+@test_throws MLJWrappers.ERR_TRANSFORMER_MODEL_UNSPECIFIED Transformer()
 
 @test transformer isa Unsupervised
 
