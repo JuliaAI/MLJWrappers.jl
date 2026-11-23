@@ -1,5 +1,5 @@
 using Test
-using MLJWrappers
+import MLJWrappers
 using MLJModels
 using MLJTransforms
 using CategoricalArrays
@@ -21,23 +21,23 @@ y2_ = categorical(yraw[2:end], ordered=true)
 
     atom = ConstantClassifier()
 
-    @test_throws MLJModels.ERR_MODEL_UNSPECIFIED BinaryThresholdPredictor()
-    model = BinaryThresholdPredictor(atom)
+    @test_throws MLJWrappers.ERR_MODEL_UNSPECIFIED MLJWrappers.BinaryThresholdPredictor()
+    model = MLJWrappers.BinaryThresholdPredictor(atom)
 
     @test_throws(
-        MLJModels.err_unsupported_model_type(MLJBase.Unsupervised),
-        BinaryThresholdPredictor(Standardizer()),
+        MLJWrappers.err_unsupported_model_type(MLJBase.Unsupervised),
+        MLJWrappers.BinaryThresholdPredictor(Standardizer()),
     )
 
     # Check warning when `y` is not ordered:
-    @test_logs((:warn, MLJModels.warn_levels(levels(y_)...)),
+    @test_logs((:warn, MLJWrappers.warn_levels(levels(y_)...)),
                 MMI.fit(model, 1, MMI.reformat(model, X_, y1_)...))
     # Check predictions containing two levels
-    @test_throws ArgumentError BinaryThresholdPredictor(ConstantRegressor())
+    @test_throws ArgumentError MLJWrappers.BinaryThresholdPredictor(ConstantRegressor())
     @test_logs((:warn, r"`threshold` should be"),
-               BinaryThresholdPredictor(atom, threshold=-1))
+               MLJWrappers.BinaryThresholdPredictor(atom, threshold=-1))
     @test_logs((:warn, r"`threshold` should be"),
-               BinaryThresholdPredictor(atom, threshold=1))
+               MLJWrappers.BinaryThresholdPredictor(atom, threshold=1))
 
     # data reformat
     X, y = MMI.reformat(model, X_, y_)
@@ -84,7 +84,7 @@ y2_ = categorical(yraw[2:end], ordered=true)
     @test MMI.target_scitype(model) == AbstractVector{<:MMI.Finite{2}}
     @test MMI.is_pure_julia(model) == MMI.is_pure_julia(model.model)
     @test MMI.name(model) == "BinaryThresholdPredictor"
-    @test MMI.load_path(model) == "MLJModels.BinaryThresholdPredictor"
+    @test MMI.load_path(model) == "MLJWrappers.BinaryThresholdPredictor"
 end
 
 @testset "_predict_threshold" begin
@@ -92,47 +92,47 @@ end
     v2 = categorical(['a', 'b', 'a', 'c'])
     # Test with UnivariateFinite object
     d1 = UnivariateFinite(levels(v1), [0.4, 0.6])
-    @test_throws ArgumentError MLJModels._predict_threshold(d1, 0.7)
-    @test MLJModels._predict_threshold(d1, (0.7, 0.3)) == v1[2]
-    @test MLJModels._predict_threshold(d1, [0.5, 0.5]) == v1[2]
-    @test MLJModels._predict_threshold(d1, (0.4, 0.6)) == v1[1]
-    @test MLJModels._predict_threshold(d1, [0.2, 0.8]) == v1[1]
+    @test_throws ArgumentError MLJWrappers._predict_threshold(d1, 0.7)
+    @test MLJWrappers._predict_threshold(d1, (0.7, 0.3)) == v1[2]
+    @test MLJWrappers._predict_threshold(d1, [0.5, 0.5]) == v1[2]
+    @test MLJWrappers._predict_threshold(d1, (0.4, 0.6)) == v1[1]
+    @test MLJWrappers._predict_threshold(d1, [0.2, 0.8]) == v1[1]
     d2 = UnivariateFinite(levels(v2), [0.4, 0.3, 0.3])
-    @test_throws ArgumentError MLJModels._predict_threshold(d2, (0.7, 0.3))
-    @test MLJModels._predict_threshold(d2, (0.2, 0.5, 0.3)) == v2[1]
-    @test MLJModels._predict_threshold(d2, [0.3, 0.2, 0.5]) == v2[2]
-    @test MLJModels._predict_threshold(d2, (0.4, 0.4, 0.2)) == v2[4]
-    @test MLJModels._predict_threshold(d2, [0.2, 0.5, 0.3]) == v2[1]
+    @test_throws ArgumentError MLJWrappers._predict_threshold(d2, (0.7, 0.3))
+    @test MLJWrappers._predict_threshold(d2, (0.2, 0.5, 0.3)) == v2[1]
+    @test MLJWrappers._predict_threshold(d2, [0.3, 0.2, 0.5]) == v2[2]
+    @test MLJWrappers._predict_threshold(d2, (0.4, 0.4, 0.2)) == v2[4]
+    @test MLJWrappers._predict_threshold(d2, [0.2, 0.5, 0.3]) == v2[1]
 
     # Test with Array{UnivariateFinite, 1} object
     d1_arr = [d1 for i in 1:3]
-    @test_throws ArgumentError MLJModels._predict_threshold(d1_arr, 0.7)
-    @test MLJModels._predict_threshold(d1_arr, (0.7, 0.3)) == [v1[2] for i in 1:3]
-    @test MLJModels._predict_threshold(d1_arr, [0.5, 0.5]) == [v1[2] for i in 1:3]
-    @test MLJModels._predict_threshold(d1_arr, (0.4, 0.6)) == [v1[1] for i in 1:3]
-    @test MLJModels._predict_threshold(d1_arr, [0.2, 0.8]) == [v1[1] for i in 1:3]
+    @test_throws ArgumentError MLJWrappers._predict_threshold(d1_arr, 0.7)
+    @test MLJWrappers._predict_threshold(d1_arr, (0.7, 0.3)) == [v1[2] for i in 1:3]
+    @test MLJWrappers._predict_threshold(d1_arr, [0.5, 0.5]) == [v1[2] for i in 1:3]
+    @test MLJWrappers._predict_threshold(d1_arr, (0.4, 0.6)) == [v1[1] for i in 1:3]
+    @test MLJWrappers._predict_threshold(d1_arr, [0.2, 0.8]) == [v1[1] for i in 1:3]
     d2_arr = [d2 for i in 1:3]
-    @test_throws ArgumentError MLJModels._predict_threshold(d2_arr, (0.7, 0.3))
-    @test MLJModels._predict_threshold(d2_arr, (0.2, 0.5, 0.3)) == [v2[1] for i in 1:3]
-    @test MLJModels._predict_threshold(d2_arr, [0.3, 0.2, 0.5]) == [v2[2] for i in 1:3]
-    @test MLJModels._predict_threshold(d2_arr, (0.4, 0.4, 0.2)) == [v2[4] for i in 1:3]
-    @test MLJModels._predict_threshold(d2_arr, [0.2, 0.5, 0.3]) == [v2[1] for i in 1:3]
+    @test_throws ArgumentError MLJWrappers._predict_threshold(d2_arr, (0.7, 0.3))
+    @test MLJWrappers._predict_threshold(d2_arr, (0.2, 0.5, 0.3)) == [v2[1] for i in 1:3]
+    @test MLJWrappers._predict_threshold(d2_arr, [0.3, 0.2, 0.5]) == [v2[2] for i in 1:3]
+    @test MLJWrappers._predict_threshold(d2_arr, (0.4, 0.4, 0.2)) == [v2[4] for i in 1:3]
+    @test MLJWrappers._predict_threshold(d2_arr, [0.2, 0.5, 0.3]) == [v2[1] for i in 1:3]
 
     # Test with UnivariateFiniteArray oject
     probs1 = [0.2 0.8; 0.7 0.3; 0.1 0.9]
     unf_arr1 = UnivariateFinite(levels(v1), probs1)
-    @test_throws ArgumentError MLJModels._predict_threshold(unf_arr1, 0.7)
-    @test MLJModels._predict_threshold(unf_arr1, (0.7, 0.3)) == [v1[2], v1[1], v1[2]]
-    @test MLJModels._predict_threshold(unf_arr1, [0.5, 0.5]) == [v1[2], v1[1], v1[2]]
-    @test MLJModels._predict_threshold(unf_arr1, (0.4, 0.6)) == [v1[2], v1[1], v1[2]]
-    @test MLJModels._predict_threshold(unf_arr1, [0.2, 0.8]) == [v1[1], v1[1], v1[2]]
+    @test_throws ArgumentError MLJWrappers._predict_threshold(unf_arr1, 0.7)
+    @test MLJWrappers._predict_threshold(unf_arr1, (0.7, 0.3)) == [v1[2], v1[1], v1[2]]
+    @test MLJWrappers._predict_threshold(unf_arr1, [0.5, 0.5]) == [v1[2], v1[1], v1[2]]
+    @test MLJWrappers._predict_threshold(unf_arr1, (0.4, 0.6)) == [v1[2], v1[1], v1[2]]
+    @test MLJWrappers._predict_threshold(unf_arr1, [0.2, 0.8]) == [v1[1], v1[1], v1[2]]
     probs2 = [0.2 0.3 0.5;0.1 0.6 0.3; 0.4 0.0 0.6]
     unf_arr2 = UnivariateFinite(levels(v2), probs2)
-    @test_throws ArgumentError MLJModels._predict_threshold(unf_arr2, (0.7, 0.3))
-    @test MLJModels._predict_threshold(unf_arr2, (0.2, 0.5, 0.3)) == [v2[4], v2[2], v2[1]]
-    @test MLJModels._predict_threshold(unf_arr2, [0.3, 0.2, 0.5]) == [v2[2], v2[2], v2[1]]
-    @test MLJModels._predict_threshold(unf_arr2, (0.4, 0.4, 0.2)) == [v2[4], v2[2], v2[4]]
-    @test MLJModels._predict_threshold(unf_arr2, [0.2, 0.5, 0.3]) == [v2[4], v2[2], v2[1]]
+    @test_throws ArgumentError MLJWrappers._predict_threshold(unf_arr2, (0.7, 0.3))
+    @test MLJWrappers._predict_threshold(unf_arr2, (0.2, 0.5, 0.3)) == [v2[4], v2[2], v2[1]]
+    @test MLJWrappers._predict_threshold(unf_arr2, [0.3, 0.2, 0.5]) == [v2[2], v2[2], v2[1]]
+    @test MLJWrappers._predict_threshold(unf_arr2, (0.4, 0.4, 0.2)) == [v2[4], v2[2], v2[4]]
+    @test MLJWrappers._predict_threshold(unf_arr2, [0.2, 0.5, 0.3]) == [v2[4], v2[2], v2[1]]
 end
 
 # dummy detector always predicts outliers and inliers with equal
@@ -146,8 +146,8 @@ MMI.predict(::DummyDetector, verbosity, X) =
 MMI.input_scitype(::Type{<:DummyDetector}) = MMI.Table
 
 @testset "BinaryThresholdPredictor - ProbabilisticUnsupervisedDetector" begin
-    detector = BinaryThresholdPredictor(DummyDetector(), threshold=0.2)
-    @test_throws MLJModels.ERR_LEVELS_DETECTOR MMI.fit(
+    detector = MLJWrappers.BinaryThresholdPredictor(DummyDetector(), threshold=0.2)
+    @test_throws MLJWrappers.ERR_LEVELS_DETECTOR MMI.fit(
         detector, 1, MMI.reformat(detector, X_, y1_)...
     )
 
@@ -173,17 +173,17 @@ MMI.input_scitype(::Type{<:DummyDetector}) = MMI.Table
 end
 
 @testset "_make_binary" begin
-    @test MLJModels._make_binary(AbstractVector{<:Multiclass}) ==
+    @test MLJWrappers._make_binary(AbstractVector{<:Multiclass}) ==
         AbstractVector{<:Multiclass{2}}
-    @test MLJModels._make_binary(AbstractVector{<:Union{Missing,Multiclass}}) ==
+    @test MLJWrappers._make_binary(AbstractVector{<:Union{Missing,Multiclass}}) ==
         AbstractVector{<:Union{Missing,Multiclass{2}}}
-    @test MLJModels._make_binary(AbstractVector{<:OrderedFactor}) ==
+    @test MLJWrappers._make_binary(AbstractVector{<:OrderedFactor}) ==
         AbstractVector{<:OrderedFactor{2}}
-    @test MLJModels._make_binary(AbstractVector{<:Union{Missing,OrderedFactor}}) ==
+    @test MLJWrappers._make_binary(AbstractVector{<:Union{Missing,OrderedFactor}}) ==
         AbstractVector{<:Union{Missing,OrderedFactor{2}}}
-    @test MLJModels._make_binary(AbstractVector{<:Finite}) ==
+    @test MLJWrappers._make_binary(AbstractVector{<:Finite}) ==
         AbstractVector{<:Finite{2}}
-    @test MLJModels._make_binary(AbstractVector{<:Union{Missing,Finite}}) ==
+    @test MLJWrappers._make_binary(AbstractVector{<:Union{Missing,Finite}}) ==
         AbstractVector{<:Union{Missing,Finite{2}}}
 end
 
@@ -202,7 +202,7 @@ MMI.target_scitype(::Type{<:DummyIterativeClassifier}) =
     X = ones(3, 2)
     y = ScientificTypes.coerce(["Y", "Y", "N"], OrderedFactor)
 
-    thresholder = BinaryThresholdPredictor(DummyIterativeClassifier())
+    thresholder = MLJWrappers.BinaryThresholdPredictor(DummyIterativeClassifier())
 
     __, __, re = MMI.fit(thresholder, 0, MMI.reformat(thresholder, X, y)...)
 
@@ -238,13 +238,13 @@ MMI.input_scitype(::Type{<:NaiveClassifier}) = Table(Continuous)
     y = categorical([2, 1, 1, 2, 1, 1, 2, 1, 1, 2], ordered=true)
 
     naive_classifier = NaiveClassifier()
-    threshold_classifier = BinaryThresholdPredictor(naive_classifier)
+    threshold_classifier = MLJWrappers.BinaryThresholdPredictor(naive_classifier)
     reformatted_args = MMI.reformat(threshold_classifier, X)
     @test reformatted_args == (MMI.matrix(X),)
     reformatted_args_ = MMI.reformat(threshold_classifier, X, y)
     @test reformatted_args_ == (
         MMI.matrix(X),
-        MLJModels.ReformattedTarget(
+        MLJWrappers.ReformattedTarget(
             (y,), levels(y), scitype(y)
         )
     )
@@ -257,7 +257,7 @@ MMI.input_scitype(::Type{<:NaiveClassifier}) = Table(Continuous)
 
     r = MMI.selectrows(threshold_classifier, I, reformatted_args_...)
     @test r[1] == MMI.matrix(X)[I, :]
-    s = MLJModels.ReformattedTarget(
+    s = MLJWrappers.ReformattedTarget(
         (y[I],), levels(y[I]), scitype(y[I])
     )
     @test r[2].y == s.y
@@ -266,7 +266,7 @@ MMI.input_scitype(::Type{<:NaiveClassifier}) = Table(Continuous)
 
     # machine end-end test
     mach = MLJBase.machine(threshold_classifier, X, y)
-    MLJBase.fit!(mach, rows=I)
+    MLJBase.fit!(mach, rows=I, verbosity=0)
     @test MLJBase.predict(mach, X) == fill(
         mode(Distributions.fit(MLJBase.UnivariateFinite, y[I])), MLJBase.nrows(X)
     )
@@ -311,7 +311,7 @@ end
 @testset "serialization for atomic models with non-persistent fitresults" begin
     # https://github.com/JuliaAI/MLJ.jl/issues/1099
     X, y = (; x = rand(8)), categorical(collect("OXXXXOOX"), ordered=true)
-    deterministic_classifier = BinaryThresholdPredictor(
+    deterministic_classifier = MLJWrappers.BinaryThresholdPredictor(
         EphemeralClassifier(),
         threshold=0.5,
     )
@@ -335,9 +335,10 @@ end
 
     clf = ConstantClassifier()
     pipe = Standardizer() |> clf
-    point_predictor = BinaryThresholdPredictor(pipe)
+    point_predictor = MLJWrappers.BinaryThresholdPredictor(pipe)
 
-    mach = MLJBase.machine(point_predictor, X, y) |> MLJBase.fit!
+    mach = MLJBase.machine(point_predictor, X, y)
+    MLJBase.fit!(mach, verbosity=0)
     @test MLJBase.predict(mach, X) == fill(mode_class, 3)
 end
 

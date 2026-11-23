@@ -15,11 +15,14 @@ Module providing various light-weight model wrappers for
 module MLJWrappers
 
 import MLJModelInterface as MMI
-import MLJModelInterface: Probabilistic, Deterministic,
+using MLJModelInterface: Probabilistic, Deterministic,
     ProbabilisticUnsupervisedDetector,
     ProbabilisticSupervisedDetector,
     DeterministicUnsupervisedDetector,
-    DeterministicSupervisedDetector
+    DeterministicSupervisedDetector,
+    target_scitype,
+    reformat,
+    selectrows
 using ScientificTypes
 using CategoricalDistributions
 
